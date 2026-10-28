@@ -1,0 +1,65 @@
+appId: com.freeram.app
+productName: FreeRAM
+copyright: Copyright © 2026 FreeRAM
+
+directories:
+  output: release
+  buildResources: build
+
+files:
+  - main.js
+  - preload.js
+  - package.json
+  - src/**/*
+  - config/**/*
+  - build/icon.ico
+  - build/icon.png
+  - "!**/*.map"
+  - "!**/*.log"
+
+# L'interface et la configuration restent modifiables après installation :
+# elles sont extraites dans resources/app.asar.unpacked.
+asar: true
+asarUnpack:
+  - src/renderer/**/*
+  - config/**/*
+
+# Métadonnées de mise à jour lues par electron-updater.
+# Le canal est forcé par le script de build : latest pour stable, beta pour bêta.
+publish:
+  provider: github
+  owner: TommyDrift929327
+  repo: FreeRAM.exe
+  channel: latest
+  releaseType: release
+  publishAutoUpdate: true
+
+win:
+  icon: build/icon.ico
+  requestedExecutionLevel: asInvoker
+  target:
+    - target: nsis
+      arch:
+        - x64
+    - target: portable
+      arch:
+        - x64
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowElevation: true
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: FreeRAM
+  uninstallDisplayName: FreeRAM
+  deleteAppDataOnUninstall: false
+  installerIcon: build/icon.ico
+  uninstallerIcon: build/icon.ico
+  installerHeaderIcon: build/icon.ico
+  runAfterFinish: true
+  artifactName: ${productName}-${version}-setup.${ext}
+
+portable:
+  artifactName: ${productName}-${version}-portable.${ext}

@@ -1,0 +1,37 @@
+{
+  "$comment": "Configuration principale de FreeRAM. Modifiable. Surcharge utilisateur optionnelle : %APPDATA%\\FreeRAM\\config\\app.config.json (mêmes clés, fusionnées par-dessus ce fichier).",
+  "version": 1,
+  "refresh": {
+    "memoryMs": 2000,
+    "cpuMs": 2000,
+    "processesMs": 4000,
+    "gpuMs": 5000,
+    "temperaturesMs": 10000
+  },
+  "processes": {
+    "topCount": 256,
+    "maxSelection": 256,
+    "defaultView": "grouped",
+    "showProtected": true
+  },
+  "closing": {
+    "verificationDelayMs": 5000,
+    "forceAfterDelay": true,
+    "postForceCheckMs": 1500
+  },
+  "memoryTrim": {
+    "minimumWorkingSetMb": 40,
+    "settleMs": 1200
+  },
+  "ui": {
+    "locale": "fr-FR",
+    "confirmBeforeTrim": true
+  },
+  "updates": {
+    "owner": "TommyDrift929327",
+    "repo": "FreeRAM.exe",
+    "channel": "stable",
+    "checkOnStartup": true,
+    "checkIntervalHours": 24
+  }
+}

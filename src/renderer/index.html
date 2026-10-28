@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none';"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FreeRAM</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/layout.css" />
+    <link rel="stylesheet" href="css/components.css" />
+  </head>
+  <body>
+    <!-- Bibliothèque d'icônes (aucune ressource externe) -->
+    <svg class="svg-sprite" aria-hidden="true" focusable="false">
+      <symbol id="i-refresh" viewBox="0 0 24 24">
+        <path d="M20 11a8 8 0 1 0-2.34 6.66" />
+        <path d="M20 4v7h-7" />
+      </symbol>
+      <symbol id="i-gauge" viewBox="0 0 24 24">
+        <path d="M4.2 18a8 8 0 1 1 15.6 0" />
+        <path d="M12 14l3.6-3.6" />
+        <circle cx="12" cy="14" r="1.2" />
+      </symbol>
+      <symbol id="i-cpu" viewBox="0 0 24 24">
+        <rect x="6" y="6" width="12" height="12" rx="2" />
+        <rect x="9.5" y="9.5" width="5" height="5" rx="1" />
+        <path d="M9 2v4M15 2v4M9 18v4M15 18v4M2 9h4M2 15h4M18 9h4M18 15h4" />
+      </symbol>
+      <symbol id="i-memory" viewBox="0 0 24 24">
+        <rect x="3" y="7" width="18" height="10" rx="2" />
+        <path d="M7 17v3M11 17v3M15 17v3M19 17v3M7 7V4M12 7V4M17 7V4" />
+        <path d="M7 11h10" />
+      </symbol>
+      <symbol id="i-search" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="6.5" />
+        <path d="M16 16l4.5 4.5" />
+      </symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="3.2" />
+        <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.1A1.7 1.7 0 0 0 9 19.34a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.64 15a1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.1A1.7 1.7 0 0 0 4.66 9a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.64 1.7 1.7 0 0 0 10.03 3.1V3a2 2 0 1 1 4 0v.1A1.7 1.7 0 0 0 15 4.66a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.36 9v.02A1.7 1.7 0 0 0 20.9 10h.1a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z" />
+      </symbol>
+      <symbol id="i-lock" viewBox="0 0 24 24">
+        <rect x="5" y="10" width="14" height="10" rx="2.5" />
+        <path d="M8 10V7a4 4 0 0 1 8 0v3" />
+        <circle cx="12" cy="15" r="1.3" />
+      </symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6" />
+      </symbol>
+      <symbol id="i-close" viewBox="0 0 24 24">
+        <path d="M6 6l12 12M18 6L6 18" />
+      </symbol>
+      <symbol id="i-check" viewBox="0 0 24 24">
+        <path d="M4 12.5l5 5L20 6.5" />
+      </symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24">
+        <path d="M12 3l9.2 16.2H2.8L12 3z" />
+        <path d="M12 9v4.5" />
+        <circle cx="12" cy="16.8" r="0.9" />
+      </symbol>
+      <symbol id="i-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 10.5V17" />
+        <circle cx="12" cy="7.5" r="0.9" />
+      </symbol>
+      <symbol id="i-shield" viewBox="0 0 24 24">
+        <path d="M12 3l7 3v5.5c0 4.4-2.9 7.7-7 9.5-4.1-1.8-7-5.1-7-9.5V6l7-3z" />
+        <path d="M9 12l2 2 4-4" />
+      </symbol>
+      <symbol id="i-trash" viewBox="0 0 24 24">
+        <path d="M4 7h16M9 7V4h6v3M7 7l1 13h8l1-13" />
+        <path d="M10 11v5M14 11v5" />
+      </symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24">
+        <path d="M12 3l1.7 5.3L19 10l-5.3 1.7L12 17l-1.7-5.3L5 10l5.3-1.7L12 3z" />
+        <path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8.8-2.2z" />
+      </symbol>
+      <symbol id="i-external" viewBox="0 0 24 24">
+        <path d="M14 4h6v6M20 4l-8 8" />
+        <path d="M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" />
+      </symbol>
+      <symbol id="i-download" viewBox="0 0 24 24">
+        <path d="M12 3v12M7 10l5 5 5-5" />
+        <path d="M5 21h14" />
+      </symbol>
+      <symbol id="i-admin" viewBox="0 0 24 24">
+        <path d="M12 2l8 3v6c0 5.2-3.2 9-8 11-4.8-2-8-5.8-8-11V5l8-3z" />
+        <path d="M12 7v6M12 16.5v.2" />
+      </symbol>
+      <symbol id="i-sort" viewBox="0 0 24 24">
+        <path d="M8 5v14M8 19l-3-3M8 19l3-3M16 19V5M16 5l-3 3M16 5l3 3" />
+      </symbol>
+    </svg>
+
+    <div class="app-shell">
+      <header class="titlebar">
+        <div class="brand">
+          <img class="brand-logo" src="assets/logo.png" alt="" width="34" height="34" />
+          <div class="brand-text">
+            <h1>FreeRAM</h1>
+            <p><span class="brand-dot"></span> Windows 11 · gestionnaire de mémoire</p>
+          </div>
+        </div>
+
+        <div class="header-metrics" aria-label="Indicateurs système">
+          <div class="metric-pill" id="pill-cpu" title="Charge CPU (moyenne de tous les cœurs)">
+            <svg class="metric-svg"><use href="#i-cpu"></use></svg>
+            <div class="metric-text">
+              <span class="metric-label">CPU</span>
+              <strong class="metric-value" id="cpu-value">—</strong>
+            </div>
+            <span class="metric-sub" id="cpu-sub">—</span>
+          </div>
+          <div class="metric-pill" id="pill-gpu" title="GPU : moteur le plus actif (compteurs Windows)">
+            <svg class="metric-svg"><use href="#i-gauge"></use></svg>
+            <div class="metric-text">
+              <span class="metric-label">GPU</span>
+              <strong class="metric-value" id="gpu-value">—</strong>
+            </div>
+            <span class="metric-sub" id="gpu-sub">—</span>
+          </div>
+        </div>
+
+        <div class="titlebar-actions">
+          <button
+            class="pill admin-pill"
+            id="admin-pill"
+            type="button"
+            title="État des droits Windows"
+          >
+            <svg class="pill-icon"><use href="#i-shield"></use></svg>
+            <span id="admin-label">Mode standard</span>
+          </button>
+          <button class="icon-button" id="github-btn" type="button" title="Voir FreeRAM sur GitHub" aria-label="Voir FreeRAM sur GitHub">
+            <svg><use href="#i-external"></use></svg>
+          </button>
+          <button class="icon-button" id="settings-btn" type="button" title="Paramètres" aria-label="Paramètres">
+            <svg><use href="#i-settings"></use></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section class="panel overview" aria-labelledby="overview-title">
+          <h2 class="sr-only" id="overview-title">Vue d'ensemble de la mémoire</h2>
+
+          <div class="gauge-block">
+            <div class="gauge-frame">
+              <svg class="gauge" id="gauge" viewBox="0 0 260 260" role="img" aria-labelledby="gauge-desc">
+                <title id="gauge-desc">Utilisation de la mémoire vive</title>
+                <defs>
+                  <linearGradient id="gaugeGradient" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="var(--accent)" />
+                    <stop offset="100%" stop-color="var(--accent-2)" />
+                  </linearGradient>
+                  <linearGradient id="gaugeGradientWarn" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="var(--warn)" />
+                    <stop offset="100%" stop-color="var(--danger)" />
+                  </linearGradient>
+                  <filter id="gaugeGlow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feMerge>
+                      <feMergeNode in="blur" />
+                      <feMergeNode in="SourceGraphic" />
+                    </feMerge>
+                  </filter>
+                </defs>
+                <circle class="gauge-track" cx="130" cy="130" r="104" />
+                <circle class="gauge-progress" id="gauge-progress" cx="130" cy="130" r="104" />
+                <circle class="gauge-head" id="gauge-head" cx="130" cy="26" r="4.5" />
+              </svg>
+              <div class="gauge-center">
+                <span class="gauge-percent" id="ram-percent">—</span>
+                <span class="gauge-label">de RAM utilisée</span>
+              </div>
+            </div>
+            <div class="gauge-caption">
+              <strong id="gauge-available">—</strong>
+              <span>disponibles sur <span id="gauge-total">—</span></span>
+            </div>
+          </div>
+
+          <div class="overview-right">
+            <div class="overview-actions">
+              <div class="live-status">
+                <span class="live-dot" id="live-dot"></span>
+                <span>Actualisation automatique · <span id="refresh-label">2 s</span></span>
+              </div>
+              <div class="action-group">
+                <button class="button ghost" id="refresh-btn" type="button">
+                  <svg class="button-icon" id="refresh-icon"><use href="#i-refresh"></use></svg>
+                  Actualiser
+                </button>
+                <button class="button primary" id="free-btn" type="button">
+                  <svg class="button-icon"><use href="#i-sparkles"></use></svg>
+                  Libérer la RAM
+                </button>
+              </div>
+            </div>
+
+            <div class="stats-grid">
+              <article class="stat-card">
+                <div class="stat-icon total"><svg><use href="#i-memory"></use></svg></div>
+                <div>
+                  <span class="stat-label">Mémoire totale</span>
+                  <strong class="stat-value" id="stat-total">—</strong>
+                  <span class="stat-sub" id="stat-total-sub">—</span>
+                </div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-icon used"><svg><use href="#i-gauge"></use></svg></div>
+                <div>
+                  <span class="stat-label">Mémoire utilisée</span>
+                  <strong class="stat-value" id="stat-used">—</strong>
+                  <span class="stat-sub" id="stat-used-sub">—</span>
+                </div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-icon available"><svg><use href="#i-check"></use></svg></div>
+                <div>
+                  <span class="stat-label">Disponible</span>
+                  <strong class="stat-value" id="stat-available">—</strong>
+                  <span class="stat-sub" id="stat-available-sub">—</span>
+                </div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-icon processes"><svg><use href="#i-cpu"></use></svg></div>
+                <div>
+                  <span class="stat-label">Processus</span>
+                  <strong class="stat-value" id="stat-processes">—</strong>
+                  <span class="stat-sub" id="stat-processes-sub">somme des working sets</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="sensor-strip">
+              <div class="sensor-card" id="sensor-cpu-temp">
+                <span class="sensor-label">Température CPU</span>
+                <strong class="sensor-value" id="cpu-temp-value">Indisponible</strong>
+                <span class="sensor-note" id="cpu-temp-note">capteur non exposé</span>
+              </div>
+              <div class="sensor-card" id="sensor-gpu-temp">
+                <span class="sensor-label">Température GPU</span>
+                <strong class="sensor-value" id="gpu-temp-value">Indisponible</strong>
+                <span class="sensor-note" id="gpu-temp-note">capteur non exposé</span>
+              </div>
+              <div class="sensor-card wide" id="sensor-gpu-info">
+                <span class="sensor-label">Carte graphique</span>
+                <strong class="sensor-value small" id="gpu-name">—</strong>
+                <span class="sensor-note" id="gpu-info-note">VRAM dédiée utilisée</span>
+              </div>
+              <button class="sensor-help" id="sensor-help-btn" type="button" title="Comment obtenir les températures ?">
+                <svg><use href="#i-info"></use></svg>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel processes-panel" aria-labelledby="processes-title">
+          <header class="panel-header">
+            <div class="panel-title">
+              <h2 id="processes-title">Processus</h2>
+              <p id="processes-subtitle">Chargement des processus…</p>
+            </div>
+            <div class="view-toggle" role="group" aria-label="Mode d'affichage">
+              <button class="view-button is-active" type="button" data-view="grouped">Par application</button>
+              <button class="view-button" type="button" data-view="processes">Par processus</button>
+            </div>
+          </header>
+
+          <div class="toolbar">
+            <label class="search-field">
+              <svg class="search-icon"><use href="#i-search"></use></svg>
+              <input
+                type="search"
+                id="search-input"
+                placeholder="Rechercher une application, un exe ou un PID…"
+                autocomplete="off"
+                spellcheck="false"
+              />
+              <kbd id="search-kbd">Ctrl K</kbd>
+            </label>
+            <div class="toolbar-meta">
+              <span class="selection-counter" id="selection-counter">0 sélectionné</span>
+              <button class="text-button" id="clear-selection" type="button" disabled>
+                Tout désélectionner
+              </button>
+            </div>
+          </div>
+
+          <div class="process-table" id="process-table">
+            <div class="process-table-head" id="process-table-head">
+              <span class="col-check"></span>
+              <span class="col-name">Application</span>
+              <span class="col-memory">Mémoire</span>
+              <span class="col-pid">PID</span>
+              <span class="col-expand"></span>
+            </div>
+            <div class="process-list" id="process-list" role="list"></div>
+            <div class="empty-state" id="empty-state" hidden>
+              <svg><use href="#i-search"></use></svg>
+              <strong>Aucun processus ne correspond</strong>
+              <span>Essayez un autre nom d'exécutable ou un PID.</span>
+            </div>
+          </div>
+
+          <footer class="selection-bar">
+            <div class="selection-summary">
+              <strong id="selection-summary">Aucun processus sélectionné</strong>
+              <span id="selection-hint">Sélectionnez jusqu'à 256 processus, puis fermez-les en toute sécurité.</span>
+            </div>
+            <div class="selection-actions">
+              <button class="button ghost" id="trim-selected-btn" type="button" disabled>
+                <svg class="button-icon"><use href="#i-sparkles"></use></svg>
+                Libérer la sélection
+              </button>
+              <button class="button danger" id="close-selected-btn" type="button" disabled>
+                <svg class="button-icon"><use href="#i-close"></use></svg>
+                Fermer la sélection
+              </button>
+            </div>
+          </footer>
+        </section>
+      </main>
+
+      <footer class="statusbar">
+        <span class="statusbar-item" id="footer-sensors">
+          <svg><use href="#i-info"></use></svg>
+          <span id="footer-sensors-text">Capteurs en cours d’initialisation…</span>
+        </span>
+        <span class="statusbar-item" id="footer-updated">Dernière actualisation : —</span>
+        <span class="statusbar-item version" id="footer-version">FreeRAM 1.0.0</span>
+      </footer>
+    </div>
+
+    <!-- Confirmation de fermeture -->
+    <dialog class="modal" id="close-dialog" aria-labelledby="close-dialog-title">
+      <div class="modal-card">
+        <header class="modal-header">
+          <div class="modal-heading">
+            <span class="modal-eyebrow danger">Fermeture de processus</span>
+            <h3 id="close-dialog-title">Fermer les applications sélectionnées ?</h3>
+            <p id="close-dialog-subtitle">—</p>
+          </div>
+          <button class="icon-button small" type="button" data-close-dialog="close-dialog" aria-label="Fermer">
+            <svg><use href="#i-close"></use></svg>
+          </button>
+        </header>
+
+        <div class="modal-body">
+          <div class="warning-box">
+            <svg class="warning-icon"><use href="#i-alert"></use></svg>
+            <div>
+              <strong>Les données non enregistrées seront perdues.</strong>
+              <p>
+                Windows enverra d'abord une demande de fermeture normale (WM_CLOSE) à chaque processus listé.
+                Une terminaison forcée ne sera utilisée qu'après la vérification de 5 secondes, et uniquement
+                si l'option ci-dessous est cochée.
+              </p>
+            </div>
+          </div>
+
+          <div class="confirm-list" id="close-confirm-list"></div>
+
+          <label class="check-row" id="force-row">
+            <input type="checkbox" id="force-checkbox" checked />
+            <span class="check-box"><svg><use href="#i-check"></use></svg></span>
+            <span>
+              <strong>Forcer après 5 s si l'application ne répond pas</strong>
+              <small>Utilise Stop-Process sur les PID encore actifs, sans toucher aux autres processus.</small>
+            </span>
+          </label>
+
+          <div class="inline-note" id="close-admin-note" hidden>
+            <svg><use href="#i-shield"></use></svg>
+            <span>
+              Mode standard : les applications lancées en administrateur peuvent refuser la fermeture.
+              Vous pouvez relancer FreeRAM en administrateur depuis les paramètres.
+            </span>
+          </div>
+        </div>
+
+        <footer class="modal-footer">
+          <button class="button ghost" type="button" data-close-dialog="close-dialog">Annuler</button>
+          <button class="button danger" id="confirm-close-btn" type="button">
+            <svg class="button-icon"><use href="#i-close"></use></svg>
+            Fermer et vérifier
+          </button>
+        </footer>
+      </div>
+    </dialog>
+
+    <!-- Progression + résultats de fermeture -->
+    <dialog class="modal wide" id="progress-dialog" aria-labelledby="progress-dialog-title">
+      <div class="modal-card">
+        <header class="modal-header">
+          <div class="modal-heading">
+            <span class="modal-eyebrow" id="progress-eyebrow">Fermeture en cours</span>
+            <h3 id="progress-dialog-title">Vérification des processus…</h3>
+            <p id="progress-dialog-subtitle">Ne fermez pas FreeRAM pendant l'opération.</p>
+          </div>
+          <button class="icon-button small" id="progress-close-x" type="button" aria-label="Fermer" hidden>
+            <svg><use href="#i-close"></use></svg>
+          </button>
+        </header>
+
+        <div class="modal-body">
+          <div class="progress-view" id="progress-view">
+            <div class="countdown">
+              <svg viewBox="0 0 120 120" class="countdown-ring">
+                <circle class="countdown-track" cx="60" cy="60" r="52" />
+                <circle class="countdown-value" id="countdown-value" cx="60" cy="60" r="52" />
+              </svg>
+              <div class="countdown-text">
+                <strong id="countdown-number">5,0</strong>
+                <span>secondes</span>
+              </div>
+            </div>
+            <ol class="operation-steps" id="operation-steps">
+              <li data-step="closing">
+                <span class="step-dot"></span>
+                <div><strong>Demande de fermeture normale</strong><small>WM_CLOSE sur les fenêtres de chaque PID</small></div>
+              </li>
+              <li data-step="waiting">
+                <span class="step-dot"></span>
+                <div><strong>Attente de 5 secondes</strong><small>Délai exact avant la nouvelle vérification</small></div>
+              </li>
+              <li data-step="verifying">
+                <span class="step-dot"></span>
+                <div><strong>Vérification par nom d'exécutable et PID</strong><small>Jamais par titre de fenêtre</small></div>
+              </li>
+              <li data-step="forcing">
+                <span class="step-dot"></span>
+                <div><strong>Terminaison forcée si nécessaire</strong><small>Uniquement les PID encore actifs</small></div>
+              </li>
+            </ol>
+            <p class="progress-message" id="progress-message">Envoi des demandes de fermeture…</p>
+          </div>
+
+          <div class="results-view" id="results-view" hidden>
+            <div class="results-summary" id="results-summary"></div>
+            <div class="results-list" id="results-list"></div>
+
+            <div class="memory-delta" id="memory-delta">
+              <div>
+                <span>RAM disponible avant</span>
+                <strong id="delta-before">—</strong>
+              </div>
+              <svg><use href="#i-chevron"></use></svg>
+              <div>
+                <span>RAM disponible après</span>
+                <strong id="delta-after">—</strong>
+              </div>
+              <div class="delta-change" id="delta-change">—</div>
+            </div>
+
+            <div class="inline-note neutral">
+              <svg><use href="#i-info"></use></svg>
+              <span>
+                La différence observée est une mesure instantanée. Windows conserve des caches, et une
+                application peut avoir plusieurs processus : la mémoire affichée n'est pas une promesse
+                de récupération.
+              </span>
+            </div>
+            <div id="result-warnings" class="result-warnings"></div>
+          </div>
+        </div>
+
+        <footer class="modal-footer" id="progress-footer">
+          <span class="modal-timer" id="modal-timer">Opération en cours…</span>
+          <button class="button primary" id="progress-done-btn" type="button" hidden>Fermer</button>
+        </footer>
+      </div>
+    </dialog>
+
+    <!-- Confirmation de libération de la RAM -->
+    <dialog class="modal" id="trim-dialog" aria-labelledby="trim-dialog-title">
+      <div class="modal-card">
+        <header class="modal-header">
+          <div class="modal-heading">
+            <span class="modal-eyebrow accent">Ajustement mémoire</span>
+            <h3 id="trim-dialog-title">Libérer de la mémoire vive ?</h3>
+            <p id="trim-dialog-subtitle">—</p>
+          </div>
+          <button class="icon-button small" type="button" data-close-dialog="trim-dialog" aria-label="Fermer">
+            <svg><use href="#i-close"></use></svg>
+          </button>
+        </header>
+        <div class="modal-body">
+          <div class="info-box">
+            <svg><use href="#i-info"></use></svg>
+            <div>
+              <strong>Ce que fait « Libérer la RAM »</strong>
+              <p id="trim-description">
+                FreeRAM demande à Windows de vider les working sets des processus concernés. Les pages
+                passent en liste de veille : cela peut réduire l'occupation affichée, mais Windows peut
+                les réutiliser. Ce n'est pas une récupération garantie.
+              </p>
+            </div>
+          </div>
+          <ul class="trim-points">
+            <li>Aucun processus n'est fermé.</li>
+            <li>Une application peut se recharger depuis le disque et ralentir un instant.</li>
+            <li>La mémoire réellement disponible dépend aussi des caches Windows et des autres logiciels.</li>
+          </ul>
+          <div class="inline-note neutral" id="trim-target-note">
+            <svg><use href="#i-memory"></use></svg>
+            <span id="trim-target-text">—</span>
+          </div>
+        </div>
+        <footer class="modal-footer">
+          <button class="button ghost" type="button" data-close-dialog="trim-dialog">Annuler</button>
+          <button class="button primary" id="confirm-trim-btn" type="button">
+            <svg class="button-icon"><use href="#i-sparkles"></use></svg>
+            Ajuster la mémoire
+          </button>
+        </footer>
+      </div>
+    </dialog>
+
+    <!-- Paramètres -->
+    <dialog class="modal settings-modal" id="settings-dialog" aria-labelledby="settings-title">
+      <div class="modal-card">
+        <header class="modal-header">
+          <div class="modal-heading">
+            <span class="modal-eyebrow accent">FreeRAM</span>
+            <h3 id="settings-title">Paramètres</h3>
+            <p>Surveillance locale, mises à jour GitHub, sans télémétrie.</p>
+          </div>
+          <button class="icon-button small" type="button" data-close-dialog="settings-dialog" aria-label="Fermer">
+            <svg><use href="#i-close"></use></svg>
+          </button>
+        </header>
+
+        <div class="modal-body settings-body">
+          <section class="settings-section">
+            <h4>Système</h4>
+            <div class="definition-grid" id="settings-system">
+              <div><span>Version</span><strong id="settings-version">—</strong></div>
+              <div><span>Electron</span><strong id="settings-electron">—</strong></div>
+              <div><span>Windows</span><strong id="settings-windows">—</strong></div>
+              <div><span>Processeur</span><strong id="settings-cpu">—</strong></div>
+              <div><span>Mémoire</span><strong id="settings-memory">—</strong></div>
+              <div><span>Droits</span><strong id="settings-admin">—</strong></div>
+              <div><span>Capteurs</span><strong id="settings-sensors">—</strong></div>
+              <div><span>Liste protégée</span><strong id="settings-protected">—</strong></div>
+            </div>
+          </section>
+
+          <section class="settings-section" id="settings-updates-section">
+            <h4>Mises à jour</h4>
+            <div class="settings-inline">
+              <label for="settings-update-channel">Canal</label>
+              <select class="settings-select" id="settings-update-channel">
+                <option value="stable">Stable</option>
+                <option value="beta">Bêta</option>
+              </select>
+            </div>
+            <div class="update-status-row">
+              <strong id="settings-update-status">—</strong>
+              <span id="settings-update-version">—</span>
+            </div>
+            <div class="update-progress" id="settings-update-progress-wrap" hidden>
+              <div class="update-progress-bar" id="settings-update-progress"></div>
+            </div>
+            <p class="settings-copy subtle" id="settings-update-help">
+              Vérification silencieuse toutes les 24 heures. Aucun téléchargement ni redémarrage
+              ne se fait sans votre accord.
+            </p>
+            <div class="settings-actions">
+              <button class="button ghost small" type="button" id="settings-update-check">
+                <svg class="button-icon"><use href="#i-refresh"></use></svg>
+                Vérifier
+              </button>
+              <button class="button primary small" type="button" id="settings-update-download" hidden>
+                <svg class="button-icon"><use href="#i-download"></use></svg>
+                Télécharger
+              </button>
+              <button class="button primary small" type="button" id="settings-update-install" hidden>
+                <svg class="button-icon"><use href="#i-refresh"></use></svg>
+                Redémarrer et installer
+              </button>
+              <button class="button ghost small" type="button" id="settings-update-github">
+                <svg class="button-icon"><use href="#i-external"></use></svg>
+                Voir sur GitHub
+              </button>
+            </div>
+          </section>
+
+          <section class="settings-section" id="settings-build-section">
+            <h4>Compilation locale</h4>
+            <p class="settings-copy" id="settings-build-help">
+              Compile le setup NSIS et le portable dans <code>release</code>, puis relance FreeRAM.
+              La compilation locale n'envoie rien sur GitHub.
+            </p>
+            <p class="settings-copy subtle" id="settings-build-status">Vérification de l'environnement…</p>
+            <div class="settings-actions">
+              <button class="button primary small" type="button" id="settings-build">
+                <svg class="button-icon"><use href="#i-settings"></use></svg>
+                Compiler FreeRAM
+              </button>
+              <button class="button ghost small" type="button" id="settings-build-log" hidden>
+                <svg class="button-icon"><use href="#i-external"></use></svg>
+                Journal de compilation
+              </button>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h4>Fichiers personnalisables</h4>
+            <p class="settings-copy">
+              L'interface est séparée en HTML, CSS et JavaScript. Modifiez librement les styles, la
+              configuration et les listes de protection, puis rechargez l'interface ou redémarrez.
+            </p>
+            <div class="settings-actions">
+              <button class="button ghost small" type="button" data-open-path="styles">
+                <svg class="button-icon"><use href="#i-external"></use></svg>
+                Dossier des styles
+              </button>
+              <button class="button ghost small" type="button" data-open-path="config">
+                <svg class="button-icon"><use href="#i-external"></use></svg>
+                Configuration
+              </button>
+              <button class="button ghost small" type="button" data-open-path="userConfig">
+                <svg class="button-icon"><use href="#i-external"></use></svg>
+                Surcharge utilisateur
+              </button>
+              <button class="button ghost small" type="button" id="settings-reload-ui">
+                <svg class="button-icon"><use href="#i-refresh"></use></svg>
+                Recharger l'interface
+              </button>
+            </div>
+          </section>
+
+          <section class="settings-section">
+            <h4>Raccourci & maintenance</h4>
+            <div class="settings-actions">
+              <button class="button primary small" type="button" id="settings-create-shortcut">
+                <svg class="button-icon"><use href="#i-external"></use></svg>
+                Créer un raccourci Bureau
+              </button>
+              <button class="button ghost small" type="button" id="settings-relaunch-admin">
+                <svg class="button-icon"><use href="#i-admin"></use></svg>
+                Relancer en administrateur
+              </button>
+              <button class="button ghost small" type="button" data-open-path="logs">
+                <svg class="button-icon"><use href="#i-external"></use></svg>
+                Journaux
+              </button>
+              <button class="button ghost small" type="button" id="settings-relaunch">
+                <svg class="button-icon"><use href="#i-refresh"></use></svg>
+                Redémarrer FreeRAM
+              </button>
+            </div>
+            <p class="settings-copy subtle">
+              Les modifications de <code>config/app.config.json</code> sont appliquées au redémarrage.
+              La terminaison forcée et la liste protégée sont revalidées côté processus principal.
+            </p>
+          </section>
+
+          <section class="settings-section">
+            <h4>Températures</h4>
+            <p class="settings-copy" id="settings-temp-help">
+              Windows n'expose pas directement les températures CPU/GPU. Pour les afficher, lancez
+              LibreHardwareMonitor en administrateur et activez son fournisseur WMI
+              (<code>root/LibreHardwareMonitor</code>). Sinon FreeRAM indique « Indisponible ».
+            </p>
+          </section>
+        </div>
+
+        <footer class="modal-footer">
+          <span class="modal-timer" id="settings-status">Aucune modification en attente</span>
+          <button class="button ghost" type="button" data-close-dialog="settings-dialog">Fermer</button>
+        </footer>
+      </div>
+    </dialog>
+
+    <div class="toast-stack" id="toast-stack" aria-live="polite" aria-atomic="true"></div>
+
+    <script type="module" src="js/app.js"></script>
+  </body>
+</html>

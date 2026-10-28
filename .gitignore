@@ -1,0 +1,26 @@
+# Dépendances
+node_modules/
+
+# Artefacts de compilation et sauvegardes locales
+release/
+release.previous/
+release.staging-*/
+dist/
+out/
+
+# Journaux et fichiers temporaires
+*.log
+*.tmp
+.tmp/
+
+# Secrets et configurations locales
+.env
+.env.*
+!.env.example
+
+# Système et éditeurs
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/

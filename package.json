@@ -1,0 +1,43 @@
+{
+  "name": "freeram",
+  "productName": "FreeRAM",
+  "version": "1.1.0-beta.1",
+  "description": "FreeRAM — surveillance de la mémoire vive et fermeture contrôlée des applications sous Windows 11",
+  "main": "main.js",
+  "author": {
+    "name": "FreeRAM"
+  },
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/TommyDrift929327/FreeRAM.exe.git"
+  },
+  "homepage": "https://github.com/TommyDrift929327/FreeRAM.exe/releases",
+  "bugs": {
+    "url": "https://github.com/TommyDrift929327/FreeRAM.exe/issues"
+  },
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron . --dev",
+    "debug": "electron . --dev --remote-debugging-port=9222",
+    "test": "node scripts/test-core.js",
+    "test:updates": "node scripts/test-updates.js",
+    "test:all": "npm test && npm run test:updates && npm run test:close",
+    "test:close": "node scripts/test-close.js",
+    "icon": "node scripts/generate-icon.js",
+    "dist": "electron-builder --win --publish never",
+    "dist:dir": "electron-builder --win --dir --publish never",
+    "dist:stable": "electron-builder --win --publish never --config.publish.channel=latest",
+    "dist:beta": "electron-builder --win --publish never --config.publish.channel=beta",
+    "shortcut": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/create-shortcut.ps1",
+    "postinstall": "node scripts/generate-icon.js"
+  },
+  "devDependencies": {
+    "electron": "45.1.0",
+    "electron-builder": "26.18.0"
+  },
+  "dependencies": {
+    "electron-updater": "6.8.11"
+  }
+}

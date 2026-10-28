@@ -1,0 +1,105 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Tests, build et release GitHub
+    runs-on: windows-latest
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Installer les dépendances
+        run: npm ci
+
+      - name: Vérifier le tag et le canal
+        shell: pwsh
+        run: |
+          $package = Get-Content package.json -Raw | ConvertFrom-Json
+          $version = $package.version
+          $tag = $env:GITHUB_REF_NAME
+          if (-not $tag.StartsWith('v')) {
+            throw "Le tag doit commencer par v : $tag"
+          }
+          $tagVersion = $tag.Substring(1)
+          if ($tagVersion -ne $version) {
+            throw "Le tag $tag ne correspond pas à package.json ($version)."
+          }
+          if ($version -match '-') {
+            if ($version -notmatch '^\d+\.\d+\.\d+-beta\.\d+$') {
+              throw "Seules les versions -beta.N sont acceptées comme pré-release : $version"
+            }
+            "CHANNEL=beta" >> $env:GITHUB_ENV
+            "PRERELEASE=true" >> $env:GITHUB_ENV
+          } else {
+            "CHANNEL=latest" >> $env:GITHUB_ENV
+            "PRERELEASE=false" >> $env:GITHUB_ENV
+          }
+          "APP_VERSION=$version" >> $env:GITHUB_ENV
+
+      - name: Tests unitaires
+        run: npm test
+
+      - name: Tests des canaux et artefacts
+        run: npm run test:updates
+
+      - name: Test d'intégration de fermeture
+        run: npm run test:close
+
+      - name: Compiler le setup et le portable
+        shell: pwsh
+        run: npx electron-builder --win --publish never --config.publish.channel=$env:CHANNEL
+
+      - name: Vérifier les artefacts de mise à jour
+        shell: pwsh
+        run: node scripts/prepare-release-assets.js --channel $env:CHANNEL
+
+      - name: Publier la release GitHub
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $tag = $env:GITHUB_REF_NAME
+          $version = $env:APP_VERSION
+          $releaseDir = Join-Path $PWD 'release'
+          $assets = @(
+            (Join-Path $releaseDir "FreeRAM-$version-setup.exe"),
+            (Join-Path $releaseDir "FreeRAM-$version-portable.exe"),
+            (Join-Path $releaseDir "FreeRAM-$version-setup.exe.blockmap")
+          )
+          if ($env:CHANNEL -eq 'beta') {
+            $assets += (Join-Path $releaseDir 'beta.yml')
+          } else {
+            $assets += (Join-Path $releaseDir 'latest.yml')
+            $assets += (Join-Path $releaseDir 'beta.yml')
+          }
+
+          $arguments = @(
+            'release', 'create', $tag,
+            '--title', "FreeRAM $version",
+            '--generate-notes',
+            '--verify-tag'
+          )
+          if ($env:PRERELEASE -eq 'true') {
+            $arguments += '--prerelease'
+          }
+          $arguments += $assets
+
+          & gh @arguments
+          if ($LASTEXITCODE -ne 0) {
+            throw "gh release create a échoué avec le code $LASTEXITCODE."
+          }
